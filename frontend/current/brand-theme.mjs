@@ -1,5 +1,6 @@
 // Cosmetic domain branding only; never enters accounts or signed orders.
 import { themeForHostname, faviconForTheme, socialMetadataForTheme } from './domain-brand.mjs';
+import {SHARED_PRODUCT_CSS} from './shared-product-design.mjs';
 export const normalizeTheme = value => value === 'yellow' ? 'yellow' : 'purple';
 export const themeName = value => normalizeTheme(value) === 'yellow' ? 'Yellowhands' : 'Purple Hands';
 export const currentTheme = () => normalizeTheme(globalThis.document?.documentElement?.dataset.brandTheme);
@@ -100,4 +101,4 @@ html[data-brand-theme=yellow] :is(button,input,[data-chart-interactive]):focus-v
 @media(max-width:650px){html #purple-hands-play .p-demo{display:none}html #purple-hands-play .p-header{gap:6px}html #purple-hands-play .p-header-actions{gap:6px}html #purple-hands-play .ph-theme-toggle-label{display:none}html #purple-hands-play .ph-theme-toggle{min-width:44px;min-height:44px!important;padding:7px!important}html #purple-hands-play .p-brandmark{--p-logo-width:40px}html #purple-hands-play .p-brandtext{font-size:17px}html #purple-hands-play .p-brand{gap:7px}html #purple-hands-play .p-wallet{padding-inline:9px}html #purple-hands-play[data-connected=true] .p-brandtext{display:block;font-size:15px}html #purple-hands-play[data-connected=true] .p-brandmark{display:none}}
 @media(max-width:360px){html #purple-hands-play .p-brandmark{display:none}html #purple-hands-play[data-connected=true] .p-brandtext{display:none}}
 @media(prefers-reduced-motion:reduce){.ph-theme-track>span{transition:none}}
-`;
+` + SHARED_PRODUCT_CSS;

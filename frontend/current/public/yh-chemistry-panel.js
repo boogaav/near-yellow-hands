@@ -16,7 +16,7 @@ export function mountChemistryPanel(container,{body=true}={}){
     const content=document.createElement('div');content.className='yh-chemistry-content';
     content.append(...panel.childNodes);
     const toggle=document.createElement('button');toggle.type='button';toggle.className='yh-chemistry-toggle';
-    let collapsed=false;try{collapsed=localStorage.getItem('yellowhands.chemistry-collapsed')==='1';}catch{}
+    let collapsed=window.matchMedia('(max-width:899px)').matches;try{const saved=localStorage.getItem('yellowhands.chemistry-collapsed');if(saved!==null)collapsed=saved==='1';}catch{}
     const apply=()=>{content.hidden=collapsed;panel.dataset.collapsed=String(collapsed);container.classList.toggle('yh-chemistry-collapsed',collapsed);toggle.setAttribute('aria-expanded',String(!collapsed));toggle.setAttribute('aria-label',collapsed?'Show body chemistry':'Collapse body chemistry');toggle.title=toggle.getAttribute('aria-label');toggle.textContent=collapsed?'◉':'− Chemistry';};
     toggle.addEventListener('click',()=>{collapsed=!collapsed;apply();try{localStorage.setItem('yellowhands.chemistry-collapsed',collapsed?'1':'0');}catch{}});
     panel.append(toggle,content);apply();

@@ -1,3 +1,5 @@
+import {SHARED_PRODUCT_CSS,mountProductNavigation} from '../../shared-product-design.mjs';
+import {profileCard,profileIdentity} from '../../shared/profile.mjs';
 import {initAnalytics} from '../../analytics/browser.mjs';
 import {initExternalAnalytics} from '../../analytics/external.mjs';
 import {nearTelemetry} from './telemetry.mjs';
@@ -20,6 +22,12 @@ import {FOCUS_CSS} from '../owned-v5/trade-focus.mjs';
 import {LAYOUT_CSS,tidyFooter} from '../owned-v5/layout.mjs';
 
 const NEAR_LAYOUT = `
+html[data-brand-theme=yellow] #purple-hands-play .yh-hands-toolbar:has(.near-trade-settings){flex-wrap:wrap;padding:10px;border:1px solid var(--p-line);border-radius:14px;background:var(--p-bg)}
+#purple-hands-play .near-trade-settings{display:flex;gap:16px;margin:0;align-items:center;font-variant-numeric:tabular-nums}
+#purple-hands-play .near-trade-settings div{display:flex;flex-direction:column;gap:2px}
+#purple-hands-play .near-trade-settings dt{color:var(--p-dim);font-size:11px}
+#purple-hands-play .near-trade-settings dd{margin:0;color:var(--p-purple);font-size:18px;font-weight:700}
+
 #purple-hands-play .yh-chemistry-toggle{min-width:44px;min-height:44px;border:1px solid var(--p-line);border-radius:10px;background:var(--p-raised);color:var(--p-ink);cursor:pointer;margin-bottom:8px}
 #purple-hands-play .yh-chemistry-sidebar[data-collapsed=true]{padding:0;border:0;overflow:visible;background:none;align-self:start}
 #purple-hands-play .yh-chemistry-sidebar[data-collapsed=true] .yh-chemistry-toggle{margin:0}
@@ -141,7 +149,8 @@ const permissionPendingKey='yellowhands:near:permission-pending:'+scope(expected
 let permissionPending=null;try{permissionPending=JSON.parse(sessionStorage.getItem(permissionPendingKey)||'null');}catch{}
 if(permissionPending&&Date.now()-permissionPending.started>90000){permissionPending=null;sessionStorage.removeItem(permissionPendingKey);}
 let snapshotValue=null,reading=false,busy=false,accountConfirmed=false,mode=location.hash==='#liquidity'?'lp':'trader',message='',review=null;
-let subscription,chart,marketFeed,resultUI,chemistry;
+let subscription,chart,marketFeed,resultUI,chemistry,productNavigation;
+function modeSwitchBlocked(){return !!(busy||permissionPending||!snapshotValue||snapshotValue.position);}
 function leave(){
   chemistry?.destroy();controller.abort();marketFeed?.stop();subscription?.unsubscribe();chart?.destroy();root.hidden=true;view.replaceChildren();
   leaveNear();
@@ -164,6 +173,8 @@ function receiptLinks(){
 }
 function writeRecord(record){localStorage.setItem(journalKey,JSON.stringify([record,...journal().filter(x=>x.id!==record.id)].slice(0,100)));}
 function render(){
+  productNavigation?.setMode('Money · NEAR',{blocked:modeSwitchBlocked()});
+  productNavigation?.setProfile(profileIdentity('NEAR',expected));
   const s=snapshotValue,p=s?.position,filled=!!p?.entry,lp=mode==='lp',owner=expected===cfg.owner;
   root.dataset.phase=filled?'active':'ready';root.dataset.tradeFocus=String(filled&&!lp);
   root.dataset.workspaceMode=mode;
@@ -308,7 +319,7 @@ async function start(){
   root.dataset.owned='true';root.dataset.connected='true';initHeaderTagline(root);initBrandTheme(root);initDesktopLayout(root);initTradeHands(root);tidyFooter(root);
   const wordmark=$('.p-brandtext');
   const home=document.createElement('a');home.className=wordmark.className;home.href='/';home.setAttribute('aria-label','Yellowhands simulator');home.style.textDecoration='none';home.innerHTML=wordmark.innerHTML;wordmark.replaceWith(home);
-  const style=document.createElement('style');style.textContent=CSS+FOCUS_CSS+LAYOUT_CSS+RESULT_CSS+NEAR_LAYOUT;document.head.append(style);
+  const style=document.createElement('style');style.textContent=CSS+FOCUS_CSS+LAYOUT_CSS+RESULT_CSS+NEAR_LAYOUT+SHARED_PRODUCT_CSS;document.head.append(style);
   const liveHero=$('#p-live-hero');
   liveHero.innerHTML='<div class="p-status" id="p-live-status"></div><div class="p-live-value p-mono" id="p-roi">—</div><div class="p-live-meta"><strong id="p-pnl">—</strong><span>·</span><span id="p-pnl-label">Live estimate · before fees</span><span>·</span><span id="p-your-margin">$10 margin</span></div><div id="p-pnl-reference" class="p-pnl-reference"></div>';
   $('.p-header').after(liveHero);
@@ -317,7 +328,7 @@ async function start(){
   $('#p-chart-source').href='https://nearblocks.io/address/'+cfg.exchange;put('#p-chart-source','NEAR exchange ↗');put('#p-chart-time','Hyperliquid BTC · market chart');put('#p-chart-loading','Loading BTC market chart…');
   put('#p-cashout-value','');put('.p-cashout-label','EXIT');put('#p-your-margin','$10 margin');put('#p-pnl-label','Before fees');$('#p-live-hero').querySelectorAll('.p-live-meta span').forEach(e=>{if(e.id==='p-pnl-reference')e.textContent='NEAR';});
   $('#p-active-controls').replaceChildren($('.p-cashout'));$('#p-active-controls').insertAdjacentHTML('beforeend','<div class="near-order" role="status" aria-live="polite" hidden></div>');
-  $('#p-entry-controls').innerHTML='<p>$10 margin · 500×</p><p>Entry requires $10.24 including $0.10 entry fee and $0.14 escrow.</p>';
+  $('#p-entry-controls').innerHTML='<p>Entry requires $10.24 including $0.10 entry fee and $0.14 escrow.</p>';
   $('#p-ready-hero').innerHTML='<div class="near-tabs" role="group" aria-label="Dashboard view"><button data-near="trader">Trader</button><button data-near="lp">LP</button></div><p id="near-state" role="status"></p><div id="near-actions"></div><div class="near-order" role="status" aria-live="polite" hidden></div><button id="near-trading-permission" type="button" class="yh-link" data-near="trading-settings"></button>';
   $('.p-terminal').insertAdjacentHTML('afterbegin','<section id="near-pool" hidden></section>');
   chart=new LivePriceChart($('#p-tv-chart'),{mascot:'dot',focusedRange:true,focusWindowMs:30000});marketFeed=new BtcLiveFeed({onUpdate:market=>{
@@ -331,6 +342,18 @@ async function start(){
   $('.p-arena').prepend(road);road.querySelector('#near-road-bird').innerHTML='<svg viewBox="0 0 80 80" aria-hidden="true"><ellipse cx="37" cy="41" rx="25" ry="21" fill="#f0b90b"/><path d="M57 38l17 8-17 6" fill="#e69c25"/><ellipse cx="31" cy="46" rx="13" ry="9" fill="#d59d09"/><circle cx="49" cy="33" r="10" fill="#fff"/><circle cx="52" cy="33" r="4" fill="#181a20"/><path d="M25 22q-7-13 4-10M34 20q0-12 9-9" stroke="#f0b90b" stroke-width="4" fill="none" stroke-linecap="round"/></svg>';
   try{chemistry=nearChemistry(mountChemistryPanel($('.p-terminal'),{body:true}));}catch{}
   marketFeed.start();
+  productNavigation=mountProductNavigation(root,{
+    onPaper:()=>{if(modeSwitchBlocked())return;sessionStorage.setItem('yellowhands:money-route','/near');location.assign('/');},
+    onTrading:()=>{if(busy)return;close();mode='trader';location.hash='';render();},
+    onProfile:()=>{modal('Your profile',profileCard({network:'NEAR',owner:expected,balance:snapshotValue?money(snapshotValue.account?.balance??0):null}));const body=$('#p-dialog-body');body.querySelector('[data-action=wallet]')?.addEventListener('click',accountMenu);body.querySelector('[data-action=history]')?.addEventListener('click',()=>modal('Your NEAR wallet activity',receiptLinks()));},
+    onHistory:()=>modal('Your NEAR wallet activity',receiptLinks()),
+    mode:'Money · NEAR'
+  });
+  const settings=document.createElement('dl');
+  settings.className='near-trade-settings';
+  settings.setAttribute('aria-label','NEAR trade settings');
+  settings.innerHTML='<div><dt>Margin</dt><dd>$10</dd></div><div><dt>Leverage</dt><dd>500×</dd></div>';
+  root.querySelector('.yh-hands-toolbar')?.append(settings);
   root.dataset.uiReady='true';document.querySelector('#yh-boot').hidden=true;render();await refresh();
 }
 root.addEventListener('click',async event=>{
