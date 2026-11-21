@@ -1,0 +1,13 @@
+{
+  "checkedAt": "2026-11-21",
+  "status": "candidate-not-approved",
+  "feed": "0x00039d9e45394f473ab1f050a1b963e6b05351e52d71e507509ada0c95ed75b8",
+  "schema": "V3",
+  "decimals": null,
+  "verifierProgram": "Gt9S41PtjR58CbG9JhJ3J6vxesqrNAswbWYbLNTMZA3c",
+  "mainnetAccessController": "7mSn5MoBjyRLKoJShgkep8J17ueGG8rYioVAiSg5YWMF",
+  "devnetAccessController": "2k3DsgwBoqrnvXKVvd7jX7aptNxdcRBdcd5HkYsGgbrb",
+  "officialSdkCommit": "893d2340254935fb947c95b6aa8e9e245c65ddc4",
+  "sources": ["https://docs.chain.link/data-streams/supported-networks", "https://docs.chain.link/data-streams/tutorials/solana-onchain-report-verification", "https://github.com/smartcontractkit/chainlink-data-streams-solana/tree/893d2340254935fb947c95b6aa8e9e245c65ddc4"],
+  "remaining": ["Report access", "Confirm feed decimals independently", "Report-specific configuration PDA and access policy", "Authentic application CPI verification", "Execution economics"]
+}

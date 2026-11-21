@@ -1,0 +1,69 @@
+{
+  "checkedAt": "2026-11-21T02:47:56.054Z",
+  "mode": "read-only-account-inventory",
+  "rows": [
+    {
+      "cluster": "mainnet-beta",
+      "slot": 471977064,
+      "accounts": [
+        {
+          "address": "Gt9S41PtjR58CbG9JhJ3J6vxesqrNAswbWYbLNTMZA3c",
+          "exists": true,
+          "owner": "BPFLoaderUpgradeab1e11111111111111111111111",
+          "executable": true,
+          "bytes": 36,
+          "dataSha256": "6e4a37ee661bd0344856f3d75bfe74bdf38ed45e86457d77970ef15b0e6fd862"
+        },
+        {
+          "address": "HJR45sRiFdGncL69HVzRK4HLS2SXcVW3KeTPkp2aFmWC",
+          "exists": true,
+          "owner": "Gt9S41PtjR58CbG9JhJ3J6vxesqrNAswbWYbLNTMZA3c",
+          "executable": false,
+          "bytes": 167032,
+          "dataSha256": "939234640f54401edc07e2bf4547b34921adcd8bfe17ff89ad2e84593b90e34b"
+        },
+        {
+          "address": "7mSn5MoBjyRLKoJShgkep8J17ueGG8rYioVAiSg5YWMF",
+          "exists": true,
+          "owner": "EjVftbXwfRZoZDzJ6eHArCqiBiPHBLq5zajRqMiHGH1A",
+          "executable": false,
+          "bytes": 2128,
+          "dataSha256": "1886ef6a4bfba0008dc9de7e8dc628bccb444b062500c2b2f2df79f938ef7445"
+        }
+      ],
+      "verifierStateOwnerMatches": true
+    },
+    {
+      "cluster": "devnet",
+      "slot": 524567313,
+      "accounts": [
+        {
+          "address": "Gt9S41PtjR58CbG9JhJ3J6vxesqrNAswbWYbLNTMZA3c",
+          "exists": true,
+          "owner": "BPFLoaderUpgradeab1e11111111111111111111111",
+          "executable": true,
+          "bytes": 36,
+          "dataSha256": "6e4a37ee661bd0344856f3d75bfe74bdf38ed45e86457d77970ef15b0e6fd862"
+        },
+        {
+          "address": "HJR45sRiFdGncL69HVzRK4HLS2SXcVW3KeTPkp2aFmWC",
+          "exists": true,
+          "owner": "Gt9S41PtjR58CbG9JhJ3J6vxesqrNAswbWYbLNTMZA3c",
+          "executable": false,
+          "bytes": 167032,
+          "dataSha256": "a3ac2922eed7d8d58b2ca5c78e38f20825bae4b35ad417be7ba2181b5441b72d"
+        },
+        {
+          "address": "2k3DsgwBoqrnvXKVvd7jX7aptNxdcRBdcd5HkYsGgbrb",
+          "exists": true,
+          "owner": "EjVftbXwfRZoZDzJ6eHArCqiBiPHBLq5zajRqMiHGH1A",
+          "executable": false,
+          "bytes": 2128,
+          "dataSha256": "7b5bff5f9551cbca0b99c4e04b272b9dc4654bedfe11ea5290e927285ded6481"
+        }
+      ],
+      "verifierStateOwnerMatches": true
+    }
+  ],
+  "authenticVerification": false
+}

@@ -1,0 +1,1 @@
+{"name":"yellowhands-solana-oracle-benchmark","private":true,"type":"module","scripts":{"test":"node --test test.mjs","benchmark":"node benchmark.mjs"},"engines":{"node":">=22"},"dependencies":{"@solana/web3.js":"1.98.4","snappyjs":"0.7.0"}}

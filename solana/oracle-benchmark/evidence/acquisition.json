@@ -1,0 +1,51 @@
+{
+  "runAt": "2026-11-21T02:46:06.135Z",
+  "mode": "read-only-mainnet-REST",
+  "feed": "0x00039d9e45394f473ab1f050a1b963e6b05351e52d71e507509ada0c95ed75b8",
+  "discovery": {
+    "status": 200,
+    "btcUsd": [
+      {
+        "feedId": "0x100324c6e00cedd7cd4ea31bad462fbaadb4f8eed1890875a4069f6c074fc964",
+        "name": "BTC/USD-Streams-CexPrice",
+        "status": "live",
+        "schemaVersion": "V3",
+        "isSubscribed": false
+      },
+      {
+        "feedId": "0x00039d9e45394f473ab1f050a1b963e6b05351e52d71e507509ada0c95ed75b8",
+        "name": "BTC/USD-Streams-CexPrice",
+        "status": "live",
+        "schemaVersion": "V3",
+        "isSubscribed": false
+      }
+    ]
+  },
+  "rows": [
+    {
+      "attempt": 1,
+      "receivedAt": "2026-11-21T02:46:06.133Z",
+      "status": 401,
+      "fetchMs": 1240.804
+    }
+  ],
+  "summary": {
+    "attempts": 1,
+    "successfulReports": 0,
+    "failures": 1,
+    "fetchMs": {
+      "p50": null,
+      "p95": null,
+      "p99": null
+    },
+    "authenticCpiVerification": "not-run",
+    "simulationMs": null,
+    "transactionConfirmationMs": null
+  },
+  "limitations": [
+    "REST acquisition timing is not stream latency or execution latency.",
+    "Decoding does not authenticate DON signatures.",
+    "Local clock uncertainty not calibrated; observation timestamps have second precision.",
+    "No transaction submitted, no funds spent, no CPI or confirmation measurement."
+  ]
+}

@@ -1,0 +1,5 @@
+node_modules/
+.local/
+*.secret
+*credentials*.json
+report.json

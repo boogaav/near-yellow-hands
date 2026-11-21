@@ -1,0 +1,9 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {auth,decode,summarize,FEED} from './core.mjs';
+function fixture(){const b=Buffer.alloc(544);b.writeUInt32BE(224,124);b.writeUInt32BE(288,252);Buffer.from(FEED.slice(2),'hex').copy(b,256);[100,101,0,0,200,1000,999,1001].forEach((v,i)=>b.writeUInt32BE(v,256+(i+1)*32+28));return b;}
+test('decode is explicitly unauthenticated and preserves integer values',()=>{const r=decode('0x'+fixture().toString('hex'));assert.equal(r.authenticated,false);assert.equal(r.benchmark,'1000');assert.equal(r.observed,101);});
+test('reject malformed, truncated, wrong feed and invalid ABI offset',()=>{for(const h of ['0x1','junk','0x00'])assert.throws(()=>decode(h));let b=fixture();b[256]=1;assert.throws(()=>decode('0x'+b.toString('hex')));b=fixture();b.writeUInt32BE(0xffffffff,124);assert.throws(()=>decode('0x'+b.toString('hex')));});
+test('reject negative price and inverted timestamps',()=>{let b=fixture();b[256+6*32]=255;assert.throws(()=>decode('0x'+b.toString('hex')));b=fixture();b.writeUInt32BE(102,316);assert.throws(()=>decode('0x'+b.toString('hex')));});
+test('failures stay in denominator and cannot become confirmation timings',()=>{const s=summarize([{status:403,fetchMs:50},{status:200,reportDecoded:true,fetchMs:100}]);assert.equal(s.failures,1);assert.equal(s.fetchMs.p95,100);assert.equal(s.transactionConfirmationMs,null);assert.equal(s.authenticCpiVerification,'not-run');assert.equal(summarize([]).fetchMs.p50,null);});
+test('authentication binds exact path and time',()=>{assert.notEqual(auth('/a','k','s',1)['X-Authorization-Signature-SHA256'],auth('/b','k','s',1)['X-Authorization-Signature-SHA256']);assert.notEqual(auth('/a','k','s',1)['X-Authorization-Signature-SHA256'],auth('/a','k','s',2)['X-Authorization-Signature-SHA256']);});
